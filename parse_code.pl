@@ -100,27 +100,99 @@ if ($#last_char_start ne $#last_char_end) {
 	}
 print "\n -------------------------------- \n";
 
-print $start,":",$end,"\n";
+print "Start Code : $kode ; ",$start,":",$end,"\n";
 for ($i=$#last_char_start;$i>0;$i--) {
 	print "i: $i, ",$last_char_start[$i],':',$last_char_end[$i],"\n";
-	if (($i==$#last_char_start) and (($last_char_start[$i] eq 0) and ($last_char_end[$i] eq 9 ))) {
-		$add_code="@last_char_start[0..($i-1)]";
+	if (($i eq $#last_char_start) and (($last_char_start[$i] eq 0) and ($last_char_end[$i] eq 9 ))) {
+		@add_code_array=();
+		@add_code_array=@last_char_start[0 .. ($i-1)];
+		$add_code='';
+		foreach (@add_code_array) {
+			$add_code=$add_code.$_;
+			}
+		#$add_code = @last_char_start[0 .. $j];
 		$last_kode=$kode.$add_code;
 		$last_kode =~ s/\s//g;
-		print "Code : ",$last_kode,"\n";
+		print "Block 1; Code : ",$last_kode,"\n";
 		next;
 		}
-	$add_code="@last_char_start[0..($i-1)]";
-	$last_kode=$kode.$add_code;
-	$last_kode =~ s/\s//g;
-	print "Code : ",$last_kode,"\n";
+	if (($i eq $#last_char_start) and (($last_char_start[$i] ne  0) or ($last_char_end[$i] ne 9))) {
+		$last_char_start_current=$last_char_start[$i];
+		@add_code_array=();
+		@add_code_array=@last_char_start[0 .. ($i-1)];
+		$add_code='';
+		foreach (@add_code_array) {
+			$add_code=$add_code.$_;
+			}
+		#$add_code=@last_char_start[0..($i-1)].$last_char_start[$i];
+		$add_code=$add_code.$last_char_start_current;
+		$last_kode=$kode.$add_code;
+		$last_kode =~ s/\s//g;
+		while ( $last_char_start_current <= 9 ) {
+			print "Block 2; Code : ",$last_kode,"\n";
+			$last_kode=$last_kode+1;
+			$last_char_start_current++;
+			}
+		}
+	if (($i < $#last_char_start)) {
+		$last_char_start_current=$last_char_start[$i];
+
+		@add_code_array=();
+		@add_code_array=@last_char_start[0 .. ($i-1)];
+		$add_code='';
+		foreach (@add_code_array) {
+			$add_code=$add_code.$_;
+			}
+		
+		$add_code=$add_code.$last_char_start_current;
+		$last_kode=$kode.$add_code;
+		$last_kode =~ s/\s//g;
+		while ($last_char_start_current < 9) {
+		$last_kode=$last_kode+1;
+		$last_char_start_current++;
+		print "Block 3; Code : ",$last_kode,"\n";
+		}
+
+		}
 
 	}
 $i=0;
 print "\n -------------------------------- \n";
-print "i: $i, ",$last_char_start[$i],':',$last_char_end[$i],"\n";
+print "i: $i, ",$last_char_start[$i],':',$last_char_end[$i];
 print "\n -------------------------------- \n";
 
+$last_char_start_current=$last_char_start[$i];
+$last_char_end_current=$last_char_end[$i];
+$add_code=$last_char_start_current;
+$last_kode=$kode.$add_code;
+$last_kode =~ s/\s//g;
+$last_kode_f=$last_kode;
+$last_char_start_current++;
+$last_kode=$last_kode+1;
+while ($last_char_start_current < $last_char_end_current)
+	{
+		print "Block 4; Code : ",$last_kode,"\n";
+		$last_char_start_current++;
+		$last_kode=$last_kode+1;
+	}
 
-#########add new line############
-#########my home ###############
+for ($i=1;$i<=$#last_char_start;$i++) {
+	$j=0;
+	if ($last_char_end[$i] eq 0) {
+		next;
+	}
+	$last_kode=$last_kode.0;
+	while ($j < $last_char_end[$i]) {
+		print "Block 5; Code : ",$last_kode,"\n";
+		$last_kode=$last_kode+1;
+		$j++;
+		}
+	print "Block 6; Code : ",$last_kode,"\n";
+	}
+$size_last_char_start = $#last_char_start + 1;
+if ($size_last_char_start eq 1) {
+	print "Block 7; Code : ",$kode.$last_char_start[0],"\n";
+	print "Block 7; Code : ",$kode.$last_char_end[0],"\n";
+
+
+}
