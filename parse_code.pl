@@ -24,12 +24,12 @@ $min_code_value=$kode.$start;
 $length_start=length $start;
 $length_end=length $end;
 
-print "\n -------------------------------- \n";
-print "Length start - $length_start \n";
-print "Length end - $length_end \n";
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
+#print "Length start - $length_start \n";
+#print "Length end - $length_end \n";
+#print "\n -------------------------------- \n";
 
-if ($length_start ne $length_end) {
+if ($length_start != $length_end) {
 	die "WTF \n";
 }
 
@@ -48,39 +48,43 @@ for ($i=0; $i<$length_end;$i++) {
 
 	}
 
-print "\n -------------------------------- \n";	
-print Dumper \@char_start;
-print Dumper \@char_end;
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";	
+#print Dumper \@char_start;
+#print Dumper \@char_end;
+#print "\n -------------------------------- \n";
 
 
 $flag_eq=0;
-print "\n -------------------------------- \n";
+if ($start==$end) {
+	print $kode.$start,"\n";
+	exit;
+	}
+#print "\n -------------------------------- \n";
 for ($i=0; $i<$length_start;$i++) {
-	if ($char_start[$i] eq $char_end[$i]) {
-		print "char ".($i+1)." eq \n";
+	if ($char_start[$i] == $char_end[$i]) {
+		#print "char ".($i+1)." eq \n";
 	} else {
-		print "char ".($i+1)." diff \n";
+		#print "char ".($i+1)." diff \n";
 		$flag_eq=1;
 		last;
 	}
 
 }
-if ( $flag_eq eq 0 ) { die "WTF \n";}
-print "\n -------------------------------- \n";
+if ( $flag_eq == 0 ) { die "WTF; flag_eq \n";}
+#print "\n -------------------------------- \n";
 
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
 $j=$i;
 for ($i=0;$i<$j;$i++) {
-	print $char_start[$i];
+	#print $char_start[$i];
 	$kode=$kode.$char_start[$i];
 	}	
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
 
 
-print "\n -------------------------------- \n";
-print "Kode - $kode";
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
+#print "Kode - $kode";
+#print "\n -------------------------------- \n";
 
 @last_char_start=();
 @last_char_end=();
@@ -91,23 +95,23 @@ for ($i=$j;$i<$length_end;$i++) {
 	push @last_char_end, $char_end[$i];
 	}
 
-print "\n -------------------------------- \n";
-print Dumper \@last_char_start;
-print Dumper \@last_char_end;
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
+#print Dumper \@last_char_start;
+#print Dumper \@last_char_end;
+#print "\n -------------------------------- \n";
 
-print "\n -------------------------------- \n";
-print "Array size : ",$#last_char_start,"\n";
-print "Array size : ",$#last_char_end,"\n";
-if ($#last_char_start ne $#last_char_end) {
+#print "\n -------------------------------- \n";
+#print "Array size : ",$#last_char_start,"\n";
+#print "Array size : ",$#last_char_end,"\n";
+if ($#last_char_start != $#last_char_end) {
 	die "WTF \n";
 	}
-print "\n -------------------------------- \n";
+#print "\n -------------------------------- \n";
 
-print "Start Code : $kode ; ",$start,":",$end,"\n";
+#print "Start Code : $kode ; ",$start,":",$end,"\n";
 for ($i=$#last_char_start;$i>0;$i--) {
-	print "i: $i, ",$last_char_start[$i],':',$last_char_end[$i],"\n";
-	if (($i eq $#last_char_start) and (($last_char_start[$i] eq 0) and ($last_char_end[$i] eq 9 ))) {
+	#print "i: $i, ",$last_char_start[$i],':',$last_char_end[$i],"\n";
+	if (($i == $#last_char_start) and (($last_char_start[$i] == 0) and ($last_char_end[$i] == 9 ))) {
 		@add_code_array=();
 		@add_code_array=@last_char_start[0 .. ($i-1)];
 		$add_code='';
@@ -126,13 +130,13 @@ for ($i=$#last_char_start;$i>0;$i--) {
 			$min_code_tmp=$min_code_tmp."0";
 			$count_9--;
 		}
-		print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-		if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+		#print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+                if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 			die "WTF \n";
 		}
 		next;
 		}
-	if (($i eq $#last_char_start) and (($last_char_start[$i] ne  0) or ($last_char_end[$i] ne 9))) {
+	if (($i == $#last_char_start) and (($last_char_start[$i] !=  0) or ($last_char_end[$i] != 9))) {
 		$last_char_start_current=$last_char_start[$i];
 		@add_code_array=();
 		@add_code_array=@last_char_start[0 .. ($i-1)];
@@ -155,8 +159,8 @@ for ($i=$#last_char_start;$i>0;$i--) {
 				$min_code_tmp=$min_code_tmp."0";
 				$count_9--;
 				}
-			print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-			if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+			print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+			if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 				die "WTF",';',length($max_code_value),';',length($last_kode)," \n";
 				}
 
@@ -174,26 +178,26 @@ for ($i=$#last_char_start;$i>0;$i--) {
 			$add_code=$add_code.$_;
 			}
 		
-		if (($last_char_start[$i] eq 0) and ($last_char_end[$i] eq 9 ))
-			{
-				print "Block 3.1; Code : ",$kode.$add_code,"\n";
-
-				$count_9=(length($max_code_value)-length($last_kode));
-				$max_code_tmp=$last_kode;
-				$min_code_tmp=$last_kode;
-				while ($count_9 > 0) {
-					$max_code_tmp=$max_code_tmp."9";
-					$min_code_tmp=$min_code_tmp."0";
-					$count_9--;
-					}
-				print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-				if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
-					die "WTF \n";
-					}
-
-				next;
-
-			}
+#		if (($last_char_start[$i] == 0) and ($last_char_end[$i] == 9 ))
+#			{
+#				print "Block 3.1; Code : ",$kode.$add_code,"\n";
+#				$last_kode=$kode.$add_code;
+#				$count_9=(length($max_code_value)-length($last_kode));
+#				$max_code_tmp=$last_kode;
+#				$min_code_tmp=$last_kode;
+#				while ($count_9 > 0) {
+#					$max_code_tmp=$max_code_tmp."9";
+#					$min_code_tmp=$min_code_tmp."0";
+#					$count_9--;
+#					}
+#				print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+#				if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
+#					die "WTF \n";
+#					}
+#
+#				next;
+#
+#			}
 		$add_code=$add_code.$last_char_start_current;
 		$last_kode=$kode.$add_code;
 		$last_kode =~ s/\s//g;
@@ -210,8 +214,8 @@ for ($i=$#last_char_start;$i>0;$i--) {
 			$min_code_tmp=$min_code_tmp."0";
 			$count_9--;
 			}
-		print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-		if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+		print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+		if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 			die "WTF \n";
 			}
 
@@ -245,8 +249,8 @@ while ($last_char_start_current < $last_char_end_current)
 			$min_code_tmp=$min_code_tmp."0";
 			$count_9--;
 			}
-		print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-		if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+		print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+		if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 			die "WTF \n";
 			}
 
@@ -271,8 +275,8 @@ for ($i=1;$i<=$#last_char_start;$i++) {
 			$min_code_tmp=$min_code_tmp."0";
 			$count_9--;
 			}
-		print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-		if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+		print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+		if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 			die "WTF \n";
 			}
 
@@ -289,8 +293,8 @@ for ($i=1;$i<=$#last_char_start;$i++) {
 		$min_code_tmp=$min_code_tmp."0";
 		$count_9--;
 		}
-	print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-	if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+	print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+	if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 		die "WTF \n";
 		}
 	}
@@ -307,8 +311,8 @@ if ($size_last_char_start eq 1) {
 		$min_code_tmp=$min_code_tmp."0";
 		$count_9--;
 		}
-	print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-	if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+	print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+	if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 		die "WTF \n";
 	}
 
@@ -322,8 +326,8 @@ if ($size_last_char_start eq 1) {
 		$min_code_tmp=$min_code_tmp."0";
 		$count_9--;
 		}
-	print "Max code : $max_code_tmp<=$max_code_value; Min code : $min_code_value>=$min_code_tmp \n";
-	if (($max_code_tmp<=$max_code_value) or ($min_code_value>=$min_code_tmp)) {
+	print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+	if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 		die "WTF \n";
 		}
 
