@@ -3,14 +3,53 @@
 
 #use strict;
 #use warnings;
+use utf8;
+binmode(STDOUT, ":utf8");
 use Data::Dumper qw(Dumper);
+use Scalar::Util qw(looks_like_number);
          
 #print Dumper \@ARGV;
-my ($kode,$start,$end)=@ARGV;
+#my ($kode,$start,$end)=@ARGV;
+
+my ($file_codes)=@ARGV;
+
+#if ( (not defined $kode) or (not defined $start) or (not defined $end) ) {
+#	die "Need arg \n";
+#}
+
+if ( ( not defined $file_codes ) ) {
+	die "Need file name \n"; 
+	}
+
+#print $file_codes,"\n";
+
+open (CODE_FILE,'<:encoding(UTF-8)',$file_codes) or die "Could not open file '$file_codes' $!";
+@file_contents = <CODE_FILE>;
+close(CODE_FILE);
+
+$k=0;
+$count=0;
+while (defined($file_contents[$k])) {
+	#print $file_contents[$k],"\n";
+        @vars=split(';',$file_contents[$k]);
+	#print $vars[0],"\n";
+	$vars[0] =~ s/\s//g;
+	$vars[1] =~ s/\s//g;
+	$vars[2] =~ s/\s//g;
+	#$vars[5] =~ s/\s//g;
+	chomp($vars[5]);
+	$kode=$vars[0];
+	$start=$vars[1];
+	$end=$vars[2];
+	$region=$vars[5];        
+$last_kode='';
+print $kode,';',$start,';',$end,';',$region,"\n";
 
 if ( (not defined $kode) or (not defined $start) or (not defined $end) ) {
-	die "Need arg \n";
-}
+	die "Need codes \n";
+	}
+	
+
 #print "\n -------------------------------- \n";
 #print $kode,"\n";
 #print $start,"\n";
@@ -199,11 +238,19 @@ for ($i=$#last_char_start;$i>0;$i--) {
 #
 #			}
 		$add_code=$add_code.$last_char_start_current;
+		$last_kode = 0;
 		$last_kode=$kode.$add_code;
 		$last_kode =~ s/\s//g;
+		$last_kode += 0;
 		while ($last_char_start_current < 9) {
-		$last_kode=$last_kode+1;
+		$last_kode_tmp=$last_kode;
+		print ",$last_kode, \n ";
+		$last_kode=int($last_kode_tmp);
+		print ",$last_kode, \n ";
+		$last_kode=int($last_kode)+1;
+		#$last_kode++;
 		$last_char_start_current++;
+		print "$kode,$add_code,$last_kode,$last_kode_tmp, \n ";
 		print "Block 3; Code : ",$last_kode,"\n";
 
 		$count_9=(length($max_code_value)-length($last_kode));
@@ -214,7 +261,7 @@ for ($i=$#last_char_start;$i>0;$i--) {
 			$min_code_tmp=$min_code_tmp."0";
 			$count_9--;
 			}
-		#print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
+		print "Max code : $max_code_tmp>$max_code_value; Min code : $min_code_tmp<$min_code_value \n";
 		if (($max_code_tmp>$max_code_value) or ($min_code_tmp<$min_code_value)) {
 			die "WTF \n";
 			}
@@ -354,3 +401,7 @@ if ($size_last_char_start eq 1) {
 
 
 }
+$k++;
+$count++;
+}
+print $count,"\n";
